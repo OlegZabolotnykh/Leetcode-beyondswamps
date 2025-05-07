@@ -7,8 +7,9 @@ class Solution {
         Solution instance = new Solution();
 //        System.out.println(instance.longestPalindrome("babad"));
 //        System.out.println(instance.longestPalindrome("cbbd"));
-        System.out.println(instance.longestPalindrome("lalaldkdla"));
-//        System.out.println(instance.longestPalindrome("kztakrekvefgchersuoiuatzlmwynzjhdqqftjcqmntoyckqfawikkdrnfgbwtdpbkymvwoumurjdzygyzsbmwzpcxcdmmpwzmeibligwiiqbecxwyxigikoewwrczkanwwqukszsbjukzumzladrvjefpegyicsgctdvldetuegxwihdtitqrdmygdrsweahfrepdcudvyvrggbkthztxwicyzazjyeztytwiyybqdsczozvtegodacdokczfmwqfmyuixbeeqluqcqwxpyrkpfcdosttzooykpvdykfxulttvvwnzftndvhsvpgrgdzsvfxdtzztdiswgwxzvbpsjlizlfrlgvlnwbjwbujafjaedivvgnbgwcdbzbdbprqrflfhahsvlcekeyqueyxjfetkxpapbeejoxwxlgepmxzowldsmqllpzeymakcshfzkvyykwljeltutdmrhxcbzizihzinywggzjctzasvefcxmhnusdvlderconvaisaetcdldeveeemhugipfzbhrwidcjpfrumshbdofchpgcsbkvaexfmenpsuodatxjavoszcitjewflejjmsuvyuyrkumednsfkbgvbqxfphfqeqozcnabmtedffvzwbgbzbfydiyaevoqtfmzxaujdydtjftapkpdhnbmrylcibzuqqynvnsihmyxdcrfftkuoymzoxpnashaderlosnkxbhamkkxfhwjsyehkmblhppbyspmcwuoguptliashefdklokjpggfiixozsrlwmeksmzdcvipgkwxwynzsvxnqtchgwwadqybkguscfyrbyxudzrxacoplmcqcsmkraimfwbauvytkxdnglwfuvehpxd"));
+//        System.out.println(instance.longestPalindrome("bb"));
+//        System.out.println(instance.longestPalindrome("lalaldkdla"));
+        System.out.println(instance.longestPalindrome("kztakrekvefgchersuoiuatzlmwynzjhdqqftjcqmntoyckqfawikkdrnfgbwtdpbkymvwoumurjdzygyzsbmwzpcxcdmmpwzmeibligwiiqbecxwyxigikoewwrczkanwwqukszsbjukzumzladrvjefpegyicsgctdvldetuegxwihdtitqrdmygdrsweahfrepdcudvyvrggbkthztxwicyzazjyeztytwiyybqdsczozvtegodacdokczfmwqfmyuixbeeqluqcqwxpyrkpfcdosttzooykpvdykfxulttvvwnzftndvhsvpgrgdzsvfxdtzztdiswgwxzvbpsjlizlfrlgvlnwbjwbujafjaedivvgnbgwcdbzbdbprqrflfhahsvlcekeyqueyxjfetkxpapbeejoxwxlgepmxzowldsmqllpzeymakcshfzkvyykwljeltutdmrhxcbzizihzinywggzjctzasvefcxmhnusdvlderconvaisaetcdldeveeemhugipfzbhrwidcjpfrumshbdofchpgcsbkvaexfmenpsuodatxjavoszcitjewflejjmsuvyuyrkumednsfkbgvbqxfphfqeqozcnabmtedffvzwbgbzbfydiyaevoqtfmzxaujdydtjftapkpdhnbmrylcibzuqqynvnsihmyxdcrfftkuoymzoxpnashaderlosnkxbhamkkxfhwjsyehkmblhppbyspmcwuoguptliashefdklokjpggfiixozsrlwmeksmzdcvipgkwxwynzsvxnqtchgwwadqybkguscfyrbyxudzrxacoplmcqcsmkraimfwbauvytkxdnglwfuvehpxd"));
     }
 
     public String longestPalindrome(String s) {
@@ -16,12 +17,14 @@ class Solution {
         String res = s.substring(0, 1);
         int maxLen = 1;
         int n = s.length();
+        String windowStr;
 
-        for (int l = 0; l < n - 1; l++) {
-            for (int r = l + 1; r < n; r++) {
-                if (r - l + 1 > maxLen && checkPalindrome(s.substring(l, r + 1), memo)) {
-                    maxLen = r - l + 1;
-                    res = s.substring(l, r + 1);
+        for (int window = 1; window <= n; window++) {
+            for (int l = 0; l + window <= n; l++) {
+                windowStr = s.substring(l, l + window);
+                if (window > maxLen && checkPalindrome(windowStr, memo)) {
+                    maxLen = window;
+                    res = windowStr;
                 }
             }
         }
@@ -37,7 +40,9 @@ class Solution {
             return memo.get(s);
         }
         if (Character.toLowerCase(s.charAt(0)) == Character.toLowerCase(s.charAt(s.length() - 1))) {
-            return checkPalindrome(s.substring(1, s.length() - 1), memo);
+            boolean checked = checkPalindrome(s.substring(1, s.length() - 1), memo);
+            memo.put(s, checked);
+            return checked;
         } else {
             memo.put(s, false);
             return false;
