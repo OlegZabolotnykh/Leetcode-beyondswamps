@@ -13,9 +13,9 @@ class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
         int[][] memotab = new int[n + 1][n + 1];
-        memotab[0][0] = 1; // empty string is palindrome
         int maxLen = 1;
-        int[] resIdxs = new int[]{0, 0};
+        int resLeft = 0;
+        int resRight = 1;
 
         for (int window = 1; window <= n; window++) {
             for (int l = 0, r; l + window <= n; l++) {
@@ -23,22 +23,20 @@ class Solution {
                 if (checkPalindrome(l, r, s, memotab) == 1) {
                     if (window > maxLen) {
                         maxLen = window;
-                        resIdxs[0] = l;
-                        resIdxs[1] = r;
+                        resLeft = l;
+                        resRight = r;
                     }
                 }
             }
         }
-        return s.substring(resIdxs[0], resIdxs[1] + 1);
+        return s.substring(resLeft, resRight + 1);
     }
 
     int checkPalindrome(int l, int r, String s, int[][] memotab) {
-        if (r < l) {
-            return memotab[l][r] = -1;
-        }
-        if (r - l + 1 == 1) {
+        if (r == l) {
             return memotab[l][r] = 1;
         }
+
         if (memotab[l][r] != 0) {
             return memotab[l][r];
         }
