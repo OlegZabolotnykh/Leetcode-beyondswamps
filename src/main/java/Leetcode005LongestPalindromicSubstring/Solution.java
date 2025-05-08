@@ -13,23 +13,18 @@ class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
         Boolean[][] memotab = new Boolean[n + 1][n + 1];
-        int maxLen = 1;
-        int resLeft = 0;
-        int resRight = 0;
+        int l = 0, r = 0;
+        int window = n;
 
-        for (int window = n; window > 0; window--) {
-            for (int l = 0, r; l + window <= n; l++) {
+        for (window = n; window > 0; window--) {
+            for (l = 0; l + window <= n; l++) {
                 r = l + window - 1;
                 if (checkPalindrome(l, r, s, memotab)) {
-                    if (window > maxLen) {
-                        maxLen = window;
-                        resLeft = l;
-                        resRight = r;
-                    }
+                        return s.substring(l, r + 1);
                 }
             }
         }
-        return s.substring(resLeft, resRight + 1);
+        return s.substring(l, r + 1);
     }
 
     boolean checkPalindrome(int l, int r, String s, Boolean[][] memotab) {
