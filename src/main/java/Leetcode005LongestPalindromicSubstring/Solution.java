@@ -17,7 +17,7 @@ class Solution {
         int resLeft = 0;
         int resRight = 0;
 
-        for (int window = 1; window <= n; window++) {
+        for (int window = n; window > 0; window--) {
             for (int l = 0, r; l + window <= n; l++) {
                 r = l + window - 1;
                 if (checkPalindrome(l, r, s, memotab)) {
